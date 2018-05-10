@@ -1,0 +1,87 @@
+#include<stdio.h>
+void enqueue(int a[],int *f,int *r,int max,int x)
+{
+	int f1=0;
+	if(*f==-1&&*r==-1)
+	{
+		*f=*f+1;
+		*r=*r+1;
+		a[*r]=x;
+		printf("enqueue element=%d\n",a[*r]);
+			*r=*r+1;
+	}
+	else if(*f==0&&*r==4)
+	{
+		printf("overflow");
+	}
+	else if(*f!=0&&*r==4)
+	{
+		*r=0;
+		a[*r]=x;
+		*r++;
+		f1=1;
+	}
+	 else if(*f-1==*r&&f1==0)
+	{
+		printf("overflow");
+	}
+	else
+	{
+		a[*r]=x;
+		*r=*r+1;
+		printf("enqueue element=%d\n",a[*r]);
+	}
+}
+int dequeue(int a[],int *f,int *r)
+{
+	int c;
+	if(*f==*r)
+	{
+		printf("underflow\n");
+		return 0;
+	}
+	else
+	{
+		c=a[*f];
+		*f=*f+1;
+		return c;
+	}
+}
+int main()
+{
+	int x,t,i,ch,a[5],a1=-1,b=-1;
+	int *r,*f;
+	f=&a1,r=&b;
+	while(1)
+	{
+		printf("enter your choice\n");
+		scanf("%d",&ch);
+		if(ch==1)
+		{
+			printf("enter the element\n");
+			scanf("%d",&x);
+			enqueue(a,f,r,4,x);
+			if(*r>*f)
+			{
+			for(i=*f;i<*r;i++)
+			printf("%d  ",a[i]);
+		}
+		else
+		{
+		for(i=0;i<=4;i++)
+			printf("%d  ",a[i]);
+			
+		}
+			printf("\n");
+		}
+		else if(ch==2)
+		{
+			t=dequeue(a,f,r);
+			printf("dequeue element=%d\n",t);
+		}
+		else 
+		{
+			break;
+		}
+	}
+}
