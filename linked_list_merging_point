@@ -1,0 +1,168 @@
+#include<iostream>
+using namespace std;
+struct node
+{
+	int data;
+	 node *next;
+};
+struct linked_list
+{
+	struct node *head;
+	struct node *tail;
+	int count;
+};
+void insert(struct linked_list *l1,int data)
+{
+	node *ptr;
+	ptr=new node();
+	ptr->data=data;
+	ptr->next=NULL;
+	if(l1->head==NULL)
+	{
+		l1->head=ptr;
+		l1->tail=ptr;
+		l1->count=l1->count+1;
+	}
+	else
+	{
+		l1->tail->next=ptr;
+		l1->tail=ptr;
+		l1->count=l1->count+1;
+	}
+}
+void insert1(struct linked_list *l2,int data)
+{
+	node *ptr;
+	ptr=new node();
+	ptr->data=data;
+	ptr->next=NULL;
+	if(l2->head==NULL)
+	{
+		l2->head=ptr;
+		l2->tail=ptr;
+		l2->count=l2->count+1;
+	}
+	else
+	{
+		l2->tail->next=ptr;
+		l2->tail=ptr;
+		l2->count=l2->count+1;
+	}
+}
+void merge_list(struct linked_list *l1,struct linked_list  *l2,int p)
+{
+	int i=1;
+	node *ptr=l1->head;
+	while(i!=p)
+	{
+		i++;
+		ptr=ptr->next;
+	}
+	l2->tail->next=ptr;
+	l2->tail=l1->tail;
+	l2->count=l2->count+(l1->count-p);
+}
+int * gen_hash(struct node *ptr)
+{
+	int *i;
+	i=(int*)ptr;
+	*i=*i%100;
+	return i;
+}
+void hash(struct node *h[100],struct node *ptr)
+{
+     int *i,j=0;
+	while(ptr!=NULL)
+	{
+		i=gen_hash(ptr);
+		h[*i]=ptr;
+		cout<<"index="<<*i<<"  "<<"address="<<h[*i]<<" "<<endl;
+		ptr=ptr->next;
+	}
+}
+int merge_point(struct linked_list *l1,struct linked_list *l2)
+{
+	node *ptr,*h[100];
+	//cout<<"hash before"<<h[0];
+	int f=0;
+	int *check;
+	if(l1->count>l2->count)
+	{
+		ptr=l1->head;
+		f=1;
+	}
+	else
+	ptr=l2->head;
+	hash(h,ptr);
+	if(f==0)
+	{
+	ptr=l1->head;
+}
+else
+ptr=l2->head;
+	while(ptr!=NULL)
+	{
+		check=gen_hash(ptr);
+		cout<<"check="<<*check<<endl;		//return 1;
+		cout<<"hashed="<<h[*check]<<endl;
+		//cout<<"next"<<ptr->next<<endl;
+		int *dec;
+	//	dec=(int*)ptr->next;
+	cout<<h[*check]<<"=="<<ptr<<endl;
+		if(h[*check]==ptr)
+		{
+			return ptr->data;
+		}
+		ptr=ptr->next;
+	}
+}
+void display(struct linked_list *l1)
+{	
+ node *r=l1->head;
+while(r!=NULL)
+{
+	cout<<r->data<<" ";
+	r=r->next;
+}
+}
+void display1(struct linked_list *l2)
+{	
+ node *r=l2->head;
+while(r!=NULL)
+{
+	cout<<r->data<<" ";
+	r=r->next;
+}
+}
+int main()
+{
+	char ch;
+	int d;
+  struct linked_list l1,l2;
+  l1.head=NULL,l2.head=NULL;
+  l1.count=0,l2.count=0;
+  //while(1)
+ // cout<<"enter the choice 1 to insert in list1 or 2 to insert in list2"<<endl;
+  int f=0;
+insert(&l1,1);
+//cout<<l1.head;
+insert1(&l2,10);
+insert(&l1,2);
+insert1(&l2,20);
+insert(&l1,3);
+insert(&l1,4);
+insert(&l1,5);
+insert1(&l2,30);
+cout<<"l1 count="<<l1.count<<endl;
+merge_list(&l1,&l2,3);
+f=1;
+cout<<"l2 count="<<l2.count<<endl;
+int c=merge_point(&l1,&l2);
+cout<<endl<<endl;
+cout<<"merging point=  "<<c<<endl<<endl;
+cout<<"list1  ";
+display(&l1);
+cout<<endl;
+cout<<"list2  ";
+display1(&l2);
+}
