@@ -1,0 +1,100 @@
+#include<stdio.h>
+struct node 
+{
+	char str[3];
+	struct node *left;
+	struct node *right;
+};
+struct node* create_node(struct node *root,char ch,struct node *s[],int *top)
+{
+	int i=0;
+	struct node *temp;
+	if(root==NULL)
+	{
+	temp=(struct node*)malloc(sizeof(struct node));
+	temp->str[i]=ch;
+	//printf("%c",temp->str[i]);
+	temp->left=NULL;
+	temp->right=NULL;
+	*top=*top+1;
+	s[*top]=temp;
+	return temp;
+}
+else
+{
+s[*top]->left=create_node(root->left,ch,s,top);
+}
+}
+void add_closing(struct node *root,struct node *temp,char ch)
+{
+	int i=0;
+	while(temp->str[i]=='('||temp->str[i]=='{'||temp->str[i]=='[')
+	{
+		i++;
+	}
+	temp->str[i]=ch;
+	temp->str[++i]='\0';
+}
+void right_br(char ch,struct node *s[],int *top)
+{
+	int i=0;
+	struct node *ptr,*temp=s[*top];
+	while(temp->right!=NULL)
+	{
+		temp=temp->right;
+}
+	ptr=(struct node*)malloc(sizeof(struct node));
+	ptr->str[i]=ch;
+	ptr->left=NULL;
+	ptr->right=NULL;
+	*top=*top+1;
+	s[*top]=ptr;
+	temp->right=ptr;
+	//printf("right=%c\n",ptr->str[i]);
+}
+struct node* insert1(struct node *root,char *a)
+{
+	int i=0,c=-1,*top,f=1;
+	struct node *temp;
+	top=&c;
+	struct node *s[10];
+	while(a[i]!='\0')
+	{
+		if((a[i]=='('||a[i]=='['||a[i]=='{')&&f==0)
+		{
+			right_br(a[i],s,top);
+			f=1;
+		}
+		else if(a[i]=='('||a[i]=='['||a[i]=='{')
+		{
+			if(root==NULL)
+			root=create_node(root,a[i],s,top);
+			else
+			create_node(root,a[i],s,top);
+		}
+		else
+		{
+			temp=s[*top];
+			add_closing(root,temp,a[i]);
+			f=0;
+			*top=*top-1;
+	    }
+	    i++;
+}
+return root;
+}
+void preorder(struct node *root)
+{
+	if(root==NULL)
+	return;
+	preorder(root->left);
+	printf("%s\n",root->str);
+ preorder(root->right);
+}
+int main()
+{
+	struct node *root=NULL;
+	char a[]={"({[]()}{{}()})"};
+	root=insert1(root,a);
+preorder(root);
+}
